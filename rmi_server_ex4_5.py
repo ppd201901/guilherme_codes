@@ -1,4 +1,4 @@
-# Rodar o servidor: python rmi_server.py
+# Rodar o servidor: python rmi_server_ex4_5.py
 import Pyro4
 
 @Pyro4.expose
