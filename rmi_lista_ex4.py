@@ -1,9 +1,8 @@
 import Pyro4
 
-uri = "PYRONAME:server.calcPeso" #input("What is the Pyro uri of the greeting object? ").strip()
-#name = input("What is your name? ")
+uri = "PYRONAME:server.calcPeso"
 
-server_test = Pyro4.Proxy(uri)  # get a Pyro proxy to the greeting object
+server_test = Pyro4.Proxy(uri)  # get a Pyro proxy to the server test
 
 nb = input("Qual sua altura? ")
 altura = float(nb)
