@@ -1,3 +1,6 @@
+# Para subir o Rabbitmq server (com o gerenciador das filas), basta executar o comando
+#  rabbitmq-server no terminal.
+
 import pika
 
 connection = pika.BlockingConnection(
