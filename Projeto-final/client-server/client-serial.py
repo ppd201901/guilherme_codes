@@ -1,5 +1,6 @@
 import time
 import pandas as pd
+from scipy.sparse import csr_matrix
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -11,7 +12,6 @@ from sklearn.externals.joblib import Parallel, delayed
 from sklearn.metrics import precision_score, recall_score, f1_score
 import socket
 import json
-
 # noinspection PyUnresolvedReferences
 from preparation.load_data import train_data, test_data
 # noinspection PyUnresolvedReferences
@@ -38,15 +38,15 @@ def client():
     labels_test = test_data["sentiment"]
 
     print(kf)
-
+    '''
     accuracy = []
     precision = []
     recall = []
     f1 = []
+    '''
     k_fold=1
 
     start_time = time.time()
-
 
     for train_index, test_index in kf.split(training_features):
 
@@ -58,10 +58,13 @@ def client():
             model.fit(X_train, X_label)
             y_pred = model.predict(y_test)
             '''
+            X_train = X_train.toarray()
+            y_test = y_test.toarray()
+
             obj = {
-                "idx_train": X_train,
+                "idx_train": X_train.tolist(),
                 "train_labels": X_label,
-                "idx_test": y_test,
+                "idx_test": y_test.tolist(),
                 "test_labels": y_label
             }
 
