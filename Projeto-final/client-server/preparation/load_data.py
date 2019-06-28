@@ -24,6 +24,7 @@ def load_train_test_imdb_data(data_dir):
             file_names = os.listdir(path)
 
             for f_name in file_names:
+                #print(f_name)
                 with open(os.path.join(path, f_name), "r", encoding="utf8") as f:
                     review = f.read()
                     data[split].append([review, score])
@@ -38,7 +39,8 @@ def load_train_test_imdb_data(data_dir):
 
     return data["train"], data["test"]
 
-#train_data, test_data = load_train_test_imdb_data(data_dir="/Users/guilherme/Dropbox/Doutorado-UFG/Disciplinas/Processamento de Linguagem Natural/Trabalho/Datasets/aclImdb/")
-data_dir="C:\\Users\\User\\Downloads\\aclImdb"
-print(data_dir)
-train_data, test_data = load_train_test_imdb_data(data_dir)
+
+train_data, test_data = load_train_test_imdb_data(data_dir="/Users/guilherme/Dropbox/Doutorado-UFG/Disciplinas/Processamento de Linguagem Natural/Trabalho/Datasets/aclImdb/")
+# data_dir="C:\\Users\\User\\Downloads\\aclImdb"
+# print(data_dir)
+# train_data, test_data = load_train_test_imdb_data(data_dir)

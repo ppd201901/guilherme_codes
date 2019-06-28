@@ -1,5 +1,9 @@
+import codecs
+
 import time
 import pandas as pd
+import numpy as np
+from scipy import sparse
 from scipy.sparse import csr_matrix
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
@@ -24,7 +28,7 @@ def client():
     client_socket = socket.socket()
     client_socket.connect((host, port))
 
-    vectorizer = TfidfVectorizer(stop_words="english", max_features=5000,
+    vectorizer = TfidfVectorizer(stop_words="english", max_features=100,
                                  preprocessor=clean_text, ngram_range=(1,2))
 
     training_features = vectorizer.fit_transform(train_data["text"])
@@ -38,12 +42,7 @@ def client():
     labels_test = test_data["sentiment"]
 
     print(kf)
-    '''
-    accuracy = []
-    precision = []
-    recall = []
-    f1 = []
-    '''
+
     k_fold=1
 
     start_time = time.time()
@@ -53,35 +52,73 @@ def client():
             X_train, X_label = training_features[train_index], labels_train[train_index]
             y_test, y_label = test_features[test_index], labels_test[test_index]
 
-            '''
-            model = LinearSVC()
-            model.fit(X_train, X_label)
-            y_pred = model.predict(y_test)
-            '''
             X_train = X_train.toarray()
-            y_test = y_test.toarray()
+            df = pd.DataFrame(X_train)
+            X = df.values.tolist()
+
+            for z in range(0, 22500):
+                X_train = X[z]
+                #dfObj = pd.DataFrame(X_train)
+                #X_train = dfObj.to_json(orient="records")
+                obj = {
+                    "idx_train": X_train
+                }
+
+                msg = json.dumps(obj)
+                client_socket.send(msg.encode())
+                data = client_socket.recv(90000000).decode()
+            print(z)
 
             obj = {
-                "idx_train": X_train.tolist(),
-                "train_labels": X_label,
-                "idx_test": y_test.tolist(),
-                "test_labels": y_label
+                "train_labels": X_label.tolist()
             }
-
             msg = json.dumps(obj)
             client_socket.send(msg.encode())
-            data = client_socket.recv(1024).decode()
+            data = client_socket.recv(90000000).decode()
 
-            print("Accuracy (fold = {}): {:.2f}".format(k_fold,data["acc"]))
-            print("Precision: {:.2f}".format(k_fold,data["pre"]))
-            print("Recall: {:.2f}".format(k_fold,data["rec"]))
-            print("F1 Score: {:.2f}".format(k_fold,data["f1"]))
+
+            y_test = y_test.toarray()
+            df = pd.DataFrame(y_test)
+            X = df.values.tolist()
+
+            z = 0
+            for z in range(0, 2500):
+                #print(X[z])
+                y_test = X[z]
+                #dfObj = pd.DataFrame(X_train)
+                #X_train = dfObj.to_json(orient="records")
+                obj = {
+                    "idx_test": y_test
+                }
+
+                msg = json.dumps(obj)
+                client_socket.send(msg.encode())
+                data = client_socket.recv(90000000).decode()
+
+            obj = {
+                "test_labels": y_label.tolist()
+            }
+            msg = json.dumps(obj)
+            client_socket.send(msg.encode())
+            data = client_socket.recv(90000000).decode()
+            result = json.loads(data)
+
+            # Unconvert matrix to csr_matrix
+            #X_train = sparse.csr_matrix(X_train)
+
+
+            print("Accuracy (fold = {}): {:.2f}".format(k_fold, float(result["acc"])))
+            print("Precision (fold = {}): {:.2f}".format(k_fold, float(result["pre"])))
+            print("Recall (fold = {}): {:.2f}".format(k_fold, float(result["rec"])))
+            print("F1 Score(fold = {}): {:.2f}".format(k_fold, float(result["f1"])))
 
             k_fold += 1
 
+            print("--- %s seconds ---" % (round(time.time() - start_time, 2)))
+            print(" ")
 
-    print("--- %s seconds ---" % (round(time.time() - start_time,2)))
+
 
 
 if __name__ == '__main__':
-    client()
+      client()
