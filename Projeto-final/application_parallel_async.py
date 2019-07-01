@@ -48,11 +48,11 @@ def treino(k_fold, train_index, test_index, training_features):
         y_pred = model.predict(y_test)
 
         # Evaluation
-        #acc = accuracy_score(y_label,y_pred.round())
-        #print("Accuracy (fold = {}): {:.2f}".format(k_fold, acc * 100))
-        #print("Precision (fold = {}): {:.2f}".format(k_fold, precision_score(y_label, y_pred, average="macro") * 100))
-        #print("Recall (fold = {}): {:.2f}".format(k_fold, recall_score(y_label, y_pred, average="macro") * 100))
-        #print("F1 Score (fold = {}): {:.2f}".format(k_fold, f1_score(y_label, y_pred, average="macro") * 100))
+        acc = accuracy_score(y_label,y_pred.round())
+        print("Accuracy (fold = {}): {:.2f}".format(k_fold, acc * 100))
+        print("Precision (fold = {}): {:.2f}".format(k_fold, precision_score(y_label, y_pred, average="macro") * 100))
+        print("Recall (fold = {}): {:.2f}".format(k_fold, recall_score(y_label, y_pred, average="macro") * 100))
+        print("F1 Score (fold = {}): {:.2f}".format(k_fold, f1_score(y_label, y_pred, average="macro") * 100))
 
 
 for iterations in range(0,30):
@@ -72,7 +72,7 @@ for iterations in range(0,30):
     for thread in thread_list:
         thread.start()
 
-    for thread in thread_list:
-        thread.join()
+    # for thread in thread_list:
+    #     thread.join()
 
     print("--- %s seconds ---" % (round(time.time() - start_time,2)))
