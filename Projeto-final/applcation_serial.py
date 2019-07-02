@@ -45,7 +45,9 @@ for train_index, test_index in kf.split(training_features):
     X_train, X_label = training_features[train_index], labels_train[train_index]
     y_test, y_label = test_features[test_index], labels_test[test_index]
 
-    model = LinearSVC()
+    model = LinearSVC()               # SVM
+    #model = MultinomialNB()           # Naive Bayes
+    #model = RandomForestClassifier()  # Floresta Randômica
     model.fit(X_train, X_label)
     y_pred = model.predict(y_test)
 
