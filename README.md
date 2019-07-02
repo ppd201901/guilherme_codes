@@ -1,5 +1,3 @@
-# guilherme_codes
-
 # Listas de exercícios
 Existem várias pastas com alguns exercícios/tarefas que foram passados pelo professor durante a disciplina.
 
