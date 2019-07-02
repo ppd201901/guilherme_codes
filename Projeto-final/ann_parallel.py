@@ -84,7 +84,7 @@ def treino(k_fold, train_index, test_index, training_features):
     k_fold += 1
 
 
-for iterations in range(0,30):
-    start_time = time.time()
-    Parallel(n_jobs=10)(delayed(treino)(k_fold,train_index, test_index, training_features) for train_index, test_index in kf.split(training_features))
-    print("--- %s seconds ---" % (round(time.time() - start_time,2)))
+#for iterations in range(0,30):
+    #start_time = time.time()
+Parallel(n_jobs=10)(delayed(treino)(k_fold,train_index, test_index, training_features) for train_index, test_index in kf.split(training_features))
+print("--- %s seconds ---" % (round(time.time() - start_time,2)))

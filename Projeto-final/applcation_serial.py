@@ -38,24 +38,24 @@ recall = []
 f1 = []
 
 
-for iterations in range(0,30):
-    start_time = time.time()
-    k_fold = 1
-    for train_index, test_index in kf.split(training_features):
-        X_train, X_label = training_features[train_index], labels_train[train_index]
-        y_test, y_label = test_features[test_index], labels_test[test_index]
+#for iterations in range(0,30):
+start_time = time.time()
+k_fold = 1
+for train_index, test_index in kf.split(training_features):
+    X_train, X_label = training_features[train_index], labels_train[train_index]
+    y_test, y_label = test_features[test_index], labels_test[test_index]
 
-        model = MultinomialNB()
-        model.fit(X_train, X_label)
-        y_pred = model.predict(y_test)
+    model = LinearSVC()
+    model.fit(X_train, X_label)
+    y_pred = model.predict(y_test)
 
-        # Evaluation
-        #acc = accuracy_score(y_label,y_pred.round())
-        #print("Accuracy (fold = {}): {:.2f}".format(k_fold, acc * 100))
-        #print("Precision: {:.2f}".format(precision_score(y_label, y_pred, average="macro") * 100))
-        #print("Recall: {:.2f}".format(recall_score(y_label, y_pred, average="macro") * 100))
-        #print("F1 Score: {:.2f}".format(f1_score(y_label, y_pred, average="macro") * 100))
+    # Evaluation
+    #acc = accuracy_score(y_label,y_pred.round())
+    #print("Accuracy (fold = {}): {:.2f}".format(k_fold, acc * 100))
+    #print("Precision: {:.2f}".format(precision_score(y_label, y_pred, average="macro") * 100))
+    #print("Recall: {:.2f}".format(recall_score(y_label, y_pred, average="macro") * 100))
+    #print("F1 Score: {:.2f}".format(f1_score(y_label, y_pred, average="macro") * 100))
 
-    k_fold = k_fold + 1
+k_fold = k_fold + 1
 
-    print("--- %s seconds ---" % (round(time.time() - start_time,2)))
+print("--- %s seconds ---" % (round(time.time() - start_time,2)))
